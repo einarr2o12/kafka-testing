@@ -15,9 +15,12 @@ spec:
     spec:
       containers:
       - name: chat-frontend
-        image: chat-frontend:latest
+        image: 1911997/chat-frontend:v1.0
         ports:
         - containerPort: 80
+        envFrom:
+        - configMapRef:
+            name: frontend-config
 ---
 apiVersion: v1
 kind: Service

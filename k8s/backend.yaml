@@ -4,7 +4,7 @@ metadata:
   name: chat-backend
   namespace: chat-app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: chat-backend
@@ -15,20 +15,12 @@ spec:
     spec:
       containers:
       - name: chat-backend
-        image: chat-backend:latest
+        image: 1911997/chat-backend:v1.0
         ports:
         - containerPort: 3000
-        env:
-        - name: PORT
-          value: "3000"
-        - name: MONGODB_URI
-          value: "mongodb://mongodb:27017/chatapp"
-        - name: KAFKA_BROKERS
-          value: "kafka:9092"
-        - name: KAFKA_CLIENT_ID
-          value: "chat-app"
-        - name: KAFKA_GROUP_ID
-          value: "chat-group"
+        envFrom:
+        - configMapRef:
+            name: backend-config
         livenessProbe:
           httpGet:
             path: /api/health
@@ -54,3 +46,7 @@ spec:
   - port: 3000
     targetPort: 3000
   type: ClusterIP
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 3600

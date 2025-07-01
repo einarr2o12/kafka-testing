@@ -13,12 +13,14 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:8080",
+    origin: process.env.FRONTEND_URL || ["http://localhost:8080", "http://chat.local"],
     methods: ["GET", "POST"]
   }
 });
 
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_URL || ["http://localhost:8080", "http://chat.local"]
+}));
 app.use(express.json());
 
 app.get('/api/health', (req, res) => {

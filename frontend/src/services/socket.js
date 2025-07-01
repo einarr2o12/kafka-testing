@@ -6,7 +6,7 @@ class SocketService {
     this.connected = false
   }
 
-  connect(serverUrl = 'http://localhost:3000') {
+  connect(serverUrl = process.env.VUE_APP_SOCKET_URL || window.location.origin) {
     this.socket = io(serverUrl)
     
     this.socket.on('connect', () => {
